@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {observer} from "mobx-react-lite"
+import './App.scss';
+import useStore from "./hooks/useStore";
+import Header from "./components/Header/Header";
+import {Route, Routes} from 'react-router-dom';
+import CartPage from "./components/Cart/CartPage";
+import OrdersScreen from "./components/OrdersScreen/OrdersScreen";
+import {useState} from "react";
+import Modal from "./components/Modal/Modal";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function App(): JSX.Element {
+    const [modalIsActive, setModalActive] = useState<boolean>(false);
+    const clickHandler = (isActive: boolean): void => {
+        setModalActive(isActive)
+    };
+    return (
+        <div className="App">
+            <Header/>
+            <Routes>
+                <Route path="/cart" element={<CartPage clickHandler={clickHandler}/>}/>
+                <Route path="/" element={<OrdersScreen/>}/>
+            </Routes>
+            <Modal modalIsActive={modalIsActive} clickHandler={clickHandler}/>
+        </div>
+    );
 }
 
-export default App;
+export default observer(App);
