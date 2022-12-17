@@ -4,11 +4,15 @@ import CartProduct from "./CartProduct";
 import {observer} from "mobx-react-lite";
 import style from "./CartPage.module.scss"
 
+type PropsType = {
+    clickHandler(isActive: boolean): void
+}
 
-const CartPage = (props: any): JSX.Element => {
-    const totalPrice = useStore().cart.totalPrice;
-    const clearOrderList = useStore().cart.clearOrderList;
-    const CartProducts = useStore().cart.orderList?.map(p => (
+const CartPage = (props: PropsType): JSX.Element => {
+    const cartStore = useStore().cart;
+    const totalPrice = cartStore.totalPrice;
+    const clearOrderList = cartStore.clearOrderList;
+    const CartProducts = cartStore.orderList?.map(p => (
         <CartProduct name={p.name} amount={p.amount} price={p.price} key={p.id} id={p.id} imgUrl={p.imgUrl}/>
     ))
 
