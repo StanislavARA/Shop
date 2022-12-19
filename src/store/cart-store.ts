@@ -15,8 +15,25 @@ const CartStore = types.model('CartStore', {
     orderList: types.array(OrderedProduct),
     totalPrice: 0,
     totalAmount: 0
-}).views(self => {
+})
+    // РЕВЬЮ. Смотри, `views`, это `computed` из MOBX, то есть набор полей, которые "наблюдают"
+    // за observable полями и перерасчитываются при их изменении https://mobx.js.org/computeds.html.
+    // Отсюда первый поинт - методы ниже это не рассчитываемое состояние, а просто функции, и место в `actions`
+    // Второй поинт - Если есть возможность рассчитать состояние из существующего лучше сделать так,
+    // не держать в нем поля `totalPrice` и `totalAmount` и не вызывать в экшнах `calculateTotalPriceAndAmountOrderList`
+    // Опасность `calculateTotalPriceAndAmountOrderList` еще и в том, что вот забудешь ты его когда-нить вызвать когда это
+    // надо будет и произойдет рассинхронизация состояния, ужаснейший и трудноотлаживаемый пиздец.
+    .views(self => {
     return {
+        // РЕВЬЮ. Это некритично, но нужно для хорошей архитектуры
+        // В исполняемом коде сначала вызывается `getProductIndex`, а потом целевой метод с индексом
+        // Это плохо тем что исполняемому коду приходится знать про стор "больше чем следует",
+        //
+        // Лучше чтобы, все методы куда передается индекс, принимали саму модель `OrderedProduct`
+        // (по генерации типа из модели смотри https://mobx-state-tree.js.org/tips/typescript)
+        // И там в методе произойдет поиск индекса через `Array.find`, ЛИБО сделать поле `orderList` - мапой
+        // `types.map`.
+        // Что это даст - стор станет для компонентов более "черным ящиком" что однозначно хорошо
         getProductIndex(product: ProductType): number {
             return self.orderList!.findIndex(p => p.id === product.id)
         },
@@ -29,6 +46,8 @@ const CartStore = types.model('CartStore', {
 })
     .actions(self => {
 
+        // РЕВЬЮ. В js/ts, по принятой повсеместно конвенции, переменные с большой буквы
+        // это либо классы, либо типы/интерфейсы. (я про ProductIndex ниже)
         function increaseAmount(ProductIndex: number): void {
             self.orderList[ProductIndex].amount++;
             [self.totalPrice, self.totalAmount] = self.calculateTotalPriceAndAmountOrderList()

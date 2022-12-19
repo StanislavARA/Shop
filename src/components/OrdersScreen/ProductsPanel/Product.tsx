@@ -12,11 +12,15 @@ const Product = (props: ProductType) => {
 
     return (
         <div className={style.body_products}>
+            {/* РЕВЬЮ. Зачем тут `<div />` обертка */}
             <div><img src={props.imgUrl}/></div>
             <div>
                 {props.name}
             </div>
             <div>
+                {/* РЕВЬЮ. В подобных ситуациях, когда нужно вывести что-то строковое с переменными, рекомендую использовать
+                    строковые шаблоны - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
+                */}
                 Цена: {props.price}р
             </div>
             <Button variant="outlined" onClick={() => {

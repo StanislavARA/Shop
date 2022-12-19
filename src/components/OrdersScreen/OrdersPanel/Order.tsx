@@ -4,6 +4,14 @@ import style from "./Order.module.scss"
 import {ProductType} from "../../../Types/ProductType";
 
 
+// РЕВЬЮ. Лучше сделать так
+// interface Props {
+//      product: ProductType
+// }
+// Это принесет 2 бенефита
+// 1. Если поменяется ProductType, не придется менять код в местах применения
+// 2. В местах применения станет красивше и проще читать
+// Замечание относится и к другим компонентам с аналогичными пропсами
 const Order = (props: ProductType): JSX.Element => {
     const cartStore = useStore().cart;
     const price = +props.price * props.amount!;
