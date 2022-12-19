@@ -9,12 +9,13 @@ const Product = types.model('Product', {
     imgUrl: types.string
 })
 
+
 const ProductsStore = types.model('BasketStore', {
     products: types.array(Product)
 }).actions(self => {
     function loadProducts() {
         initialState.map(p => self.products.push(p))
-    };
+    }
 
     function afterCreate() {
         loadProducts()

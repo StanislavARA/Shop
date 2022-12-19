@@ -3,28 +3,29 @@ import style from "./Products.module.scss"
 import Button from '@mui/material/Button';
 import {ProductType} from "../../../Types/ProductType";
 
-const Product = (props: ProductType) => {
-    const cartState = useStore().cart;
-    const addProductToOrderList = (props: ProductType): void => {
-        let indexProductOrderList = cartState.getProductIndex(props);
-        indexProductOrderList >= 0 ? cartState.increaseAmount(indexProductOrderList) : cartState.addProduct(props)
-    }
+
+interface Props {
+    product: ProductType
+}
+
+const Product = ({product}: Props) => {
+    const addProduct = useStore().cart.addProduct;
 
     return (
         <div className={style.body_products}>
             {/* РЕВЬЮ. Зачем тут `<div />` обертка */}
-            <div><img src={props.imgUrl}/></div>
+            <img src={product.imgUrl}/>
             <div>
-                {props.name}
+                {product.name}
             </div>
             <div>
                 {/* РЕВЬЮ. В подобных ситуациях, когда нужно вывести что-то строковое с переменными, рекомендую использовать
                     строковые шаблоны - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
                 */}
-                Цена: {props.price}р
+                {`Цена: ${product.price}р`}
             </div>
             <Button variant="outlined" onClick={() => {
-                addProductToOrderList(props)
+                addProduct({...product, amount: 1})
             }}>Добавить в корзину</Button>
         </div>
     )

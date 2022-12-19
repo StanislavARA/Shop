@@ -4,10 +4,11 @@ import {observer} from "mobx-react-lite"
 
 
 const OrdersPanel = (): JSX.Element => {
-    const totalPrice = useStore().cart.totalPrice;
-    const ordersProducts = useStore().cart.orderList?.map(p => (
-        <li>
-            <Order name={p.name} amount={p.amount} price={p.price} key={p.id} id={p.id} imgUrl={p.imgUrl}/>
+    const totalPrice = useStore().cart.getTotalPrice();
+
+    const ordersProducts = useStore().cart.orderList?.map(product => (
+        <li key={product.id}>
+            <Order {...product} />
         </li>
     ))
 

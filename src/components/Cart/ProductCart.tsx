@@ -1,34 +1,33 @@
 import useStore from "../../hooks/useStore";
 import Button from '@mui/material/Button';
-import {ProductType} from "../../Types/ProductType";
+import {IOrderedProduct} from "../../store/cart-store";
 
 
-const CartProduct = (props: ProductType): JSX.Element => {
-    const indexProductOrderList = useStore().cart.getProductIndex(props);
+const ProductCart = (product: IOrderedProduct): JSX.Element => {
     const removeProduct = useStore().cart.removeProduct;
 
     return (
         <div>
             <div>
-                <img src={props.imgUrl} alt=""/>
+                <img src={product.imgUrl} alt=""/>
             </div>
             <div>
-                {props.name}
+                {product.name}
             </div>
             <div>
-                Количество: {props.amount}
+                {`Количество: ${product.amount}`}
             </div>
 
             <div>
-                Цена за ед.: {props.price}р
+                {`Цена за ед.: ${product.price}р`}
             </div>
             <div>
                 <Button onClick={() => {
-                    removeProduct(indexProductOrderList)
+                    removeProduct(product)
                 }}>х</Button>
             </div>
         </div>
     )
 }
 
-export default CartProduct
+export default ProductCart

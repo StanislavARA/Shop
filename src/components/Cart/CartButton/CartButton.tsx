@@ -5,12 +5,12 @@ import Button from "@mui/material/Button";
 import {NavLink} from "react-router-dom";
 
 const CartButton = (): JSX.Element => {
-    const totalAmountProducts = useStore().cart.totalAmount
+    const totalAmountProducts = useStore().cart.getTotalAmount();
 
     return (
         <div className={style.cart}>
             <div>
-                Количество товаров: {totalAmountProducts}
+                {`Количество товаров: ${totalAmountProducts}`}
             </div>
             <NavLink to={"/cart"}> <Button variant="contained">Корзина</Button></NavLink>
         </div>

@@ -4,10 +4,10 @@ import style from "./ProductsPanel.module.scss"
 
 const ProductsPanel = () => {
 
-    const products = useStore().products.products.map(p => {
+    const products = useStore().products.products.map(product => {
         return (
-            <div key={p.id}>
-                <Product id={p.id} name={p.name} price={p.price} imgUrl={p.imgUrl}/>
+            <div key={product.id}>
+                <Product product={product}/>
             </div>
         )
     });
